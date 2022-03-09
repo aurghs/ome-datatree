@@ -66,16 +66,17 @@ def read_datasets(
     multiscales = group.attrs.get("multiscales", [])
 
     datasets_attrs = {}
+    dataset_axes = {}
     for multiscale in multiscales:
         for ds_attrs in multiscale["datasets"]:
             datasets_attrs[ds_attrs["path"]] = ds_attrs
-            datasets_attrs[ds_attrs["path"]]["axes"] = multiscale.get("axes", axes)
+            dataset_axes[ds_attrs["path"]] = multiscale.get("axes", axes)
 
     datasets = {path or "root": xr.Dataset(data_vars={}, attrs=attrs)}
     for ds_name, data in list(group.arrays()):
         rel_path = os.path.relpath(data.path, path)
         attrs = datasets_attrs.get(rel_path, {}).copy()
-        axes = attrs.pop("axes")
+        axes = dataset_axes.get(rel_path, None)
         var = open_variable(rel_path, group, dimensions=axes)
         ds = xr.Dataset(data_vars={ds_name: var}, attrs=attrs)
         if chunks is not None:
