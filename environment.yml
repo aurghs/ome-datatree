@@ -1,0 +1,9 @@
+channels:
+  - conda-forge
+dependencies:
+  - notebook
+  - pip
+  - xarray
+  - zarr
+  - pip:
+    - datatree@git+https://github.com/xarray-contrib/datatree.git
