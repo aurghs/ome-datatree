@@ -7,3 +7,4 @@ dependencies:
   - zarr
   - pip:
     - datatree@git+https://github.com/xarray-contrib/datatree.git
+    - ome_zarr
